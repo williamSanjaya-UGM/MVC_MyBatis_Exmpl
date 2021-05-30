@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.dao.EmployeeMapper">
+    <!--    id,should be given unique id-->
+    <resultMap type="employee" id="result">
+        <id property="id" column="ID"/>
+        <result property="nik" column="NIK"/>
+        <result property="name" column="NAME"/>
+        <result property="phoneNumber" column="PHONE_NUMBER"/>
+        <result property="address" column="ADDRESS"/>
+        <result property="position" column="POSITION"/>
+        <result property="jobDesc" column="JOB_DESC"/>
+        <result property="salary" column="SALARY"/>
+    </resultMap>
+
+    <select id="getAllEmployees" resultType="employee" resultMap="result">
+        SELECT * FROM EMP_HR
+    </select>
+
+    <insert id="insertEmployee" parameterType="employee" keyProperty="id">
+        INSERT INTO EMP_HR(NIK,NAME,PHONE_NUMBER,ADDRESS,POSITION,SALARY)
+        VALUES(#{nik},#{name},#{phoneNumber},#{address},#{position},#{salary})
+    </insert>
+    
+    <delete id="deleteEmployee" parameterType="int">
+        DELETE FROM EMP_HR WHERE ID=#{employeeId}
+    </delete>
+
+    <select id="findById" parameterType="int" resultType="employee" resultMap="result">
+        SELECT * FROM EMP_HR WHERE ID=#{employeeId}
+    </select>
+
+    <update id="updateEmployee" parameterType="employee">
+        UPDATE EMP_HR SET NIK=#{nik}, NAME=#{name}, PHONE_NUMBER=#{phoneNumber}, ADDRESS=#{address}, POSITION=#{position}, SALARY=#{salary}
+        WHERE ID=#{id}
+    </update>
+
+    <resultMap type="com.example.demo.entity.dto.InventoryInfo" id="inventoryInfo">
+        <id property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="sectorName" column="SECTOR_NAME"/>
+    </resultMap>
+
+    <parameterMap id="inventoryInfoLoc" type="com.example.demo.entity.ResultInfoLoc">
+        <parameter property="sectorName" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="date" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="infoCur" jdbcType="CURSOR" mode="OUT" resultMap="inventoryInfo"/>
+    </parameterMap>
+
+    <select id="runStoredProcedure" statementType="CALLABLE" parameterMap="inventoryInfoLoc">
+        {call JAVA_TEST_CALL_CHECK_INFO_LOC(?,?,?)}
+    </select>
+
+    <resultMap type="com.example.demo.entity.dto.DetHandleOrder" id="detHandleOrder">
+        <result property="cashierName" column="CNAME"/>
+        <result property="foodName" column="FNAME"/>
+        <result property="price" column="FPRICE"/>
+    </resultMap>
+
+    <parameterMap id="orderCashier" type="com.example.demo.entity.ResultOrderCashier">
+        <parameter property="transId" jdbcType="NUMERIC" mode="IN"/>
+        <parameter property="listOrderBy" jdbcType="CURSOR" mode="OUT" resultMap="detHandleOrder"/>
+    </parameterMap>
+
+    <select id="runStoredProcedure2" statementType="CALLABLE" parameterMap="orderCashier">
+        {call GET_DETORDERS_AND_CASHIER_BY_PAYMENT(?,?)}
+    </select>
+</mapper>
