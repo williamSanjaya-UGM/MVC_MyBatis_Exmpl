@@ -3,37 +3,26 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.demo.dao.EmployeeMapper">
-    <!--    id,should be given unique id-->
-    <resultMap type="employee" id="result">
-        <id property="id" column="ID"/>
-        <result property="nik" column="NIK"/>
-        <result property="name" column="NAME"/>
-        <result property="phoneNumber" column="PHONE_NUMBER"/>
-        <result property="address" column="ADDRESS"/>
-        <result property="position" column="POSITION"/>
-        <result property="jobDesc" column="JOB_DESC"/>
-        <result property="salary" column="SALARY"/>
-    </resultMap>
+<mapper namespace="com.example.demo.mapper.EmployeeMapper">
 
-    <select id="getAllEmployees" resultType="employee" resultMap="result">
+    <select id="getAllEmployees" resultType="com.example.demo.entity.Employee" resultMap="com.example.demo.mapper.EmployeeResultMap.resultEmployee">
         SELECT * FROM EMP_HR
     </select>
 
-    <insert id="insertEmployee" parameterType="employee" keyProperty="id">
+    <insert id="insertEmployee" parameterType="com.example.demo.entity.Employee" keyProperty="id">
         INSERT INTO EMP_HR(NIK,NAME,PHONE_NUMBER,ADDRESS,POSITION,SALARY)
         VALUES(#{nik},#{name},#{phoneNumber},#{address},#{position},#{salary})
     </insert>
-    
+
     <delete id="deleteEmployee" parameterType="int">
         DELETE FROM EMP_HR WHERE ID=#{employeeId}
     </delete>
 
-    <select id="findById" parameterType="int" resultType="employee" resultMap="result">
+    <select id="findById" parameterType="int" resultType="com.example.demo.entity.Employee" resultMap="com.example.demo.mapper.EmployeeResultMap.resultEmployee">
         SELECT * FROM EMP_HR WHERE ID=#{employeeId}
     </select>
 
-    <update id="updateEmployee" parameterType="employee">
+    <update id="updateEmployee" parameterType="com.example.demo.entity.Employee">
         UPDATE EMP_HR SET NIK=#{nik}, NAME=#{name}, PHONE_NUMBER=#{phoneNumber}, ADDRESS=#{address}, POSITION=#{position}, SALARY=#{salary}
         WHERE ID=#{id}
     </update>

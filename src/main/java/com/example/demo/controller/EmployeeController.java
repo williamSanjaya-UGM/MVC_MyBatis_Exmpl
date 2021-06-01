@@ -1,11 +1,11 @@
 package com.example.demo.controller;
 
-import com.example.demo.dao.EmployeeMapper;
-import com.example.demo.entity.Employee;
+import com.example.demo.entity.ResultInfoLoc;
 import com.example.demo.entity.ResultOrderCashier;
 import com.example.demo.entity.dto.DetHandleOrder;
 import com.example.demo.entity.dto.InventoryInfo;
-import com.example.demo.entity.ResultInfoLoc;
+import com.example.demo.mapper.EmployeeMapperImpl;
+import com.example.demo.entity.Employee;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,33 +26,41 @@ import java.util.List;
 @RequestMapping("/")
 public class EmployeeController {
     @Autowired
-    private EmployeeMapper mapper;
+    private EmployeeMapperImpl mapper;
+
+    private static final String EMPLOYEE="add-employee";
+    private static final String EMPLOYEELIST="list-employees";
 
     @RequestMapping
-    public ModelAndView index(){
-        ModelAndView mv = new ModelAndView("list-employees");
-        mv.addObject("listemployees",mapper.getAllEmployees());
-        return mv;
+    public String index(Model model){
+        model.addAttribute("listemployees",mapper.getAllEmployees());
+        return EMPLOYEELIST;
     }
 
-    @RequestMapping("/showFormForAddEmployee")
-    public ModelAndView showForm(){
-        ModelAndView mv = new ModelAndView("add-employee");
-        mv.addObject("employee",new Employee());
-        return mv;
+    @RequestMapping("/showFormForAdd")
+    public String addEmployee(Model model){
+        model.addAttribute("employee",new Employee());
+        return EMPLOYEE;
     }
 
     @RequestMapping("/saveProcess")
-    public String saveProcess(@ModelAttribute("employee") Employee employee){
-        if(employee.getId()==null){
-            //save operation
+    public String saveEmployee(@ModelAttribute("employee") Employee employee){
+        if(employee.getId() == null){
             mapper.saveEmployee(employee);
-        } else {
-            //update operation
+        }else{
             mapper.updateEmployee(employee);
         }
         return "redirect:/";
     }
+
+//    @RequestMapping(value = "/saveProcess",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+//    public Employee saveEmployee(@RequestBody Employee employee){
+//        System.out.println(employee);
+//        if(employee.getId() == null){
+//            mapper.saveEmployee(employee);
+//        }
+//        return employee;
+//    }
 
     @RequestMapping("/deleteEmployee")
     public String deleteEmployee(@RequestParam("employeeId") int employeeId){

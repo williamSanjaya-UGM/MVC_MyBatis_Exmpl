@@ -5,24 +5,45 @@
   Time: 7:39 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=ISO-8859-1" language="java" pageEncoding="ISO-8859-1" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="s" uri="http://www.springframework.org/tags/form" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+         pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="s"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Insert title here</title>
 </head>
+<link rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <body>
-    <h1>Add Employee</h1>
-    <s:form modelAttribute="employee" action="saveProcess">
-        <s:hidden path="id" />
-        NIK:<s:input path="nik"/><br/>
-        Name:<s:input path="name"/><br/>
-        No.Telp:<s:input path="phoneNumber"/><br/>
-        Alamat:<s:textarea path="address"/><br/>
-        Posisi:<s:input path="position"/><br/>
-        Gaji:<s:input path="salary"/><br/>
-        <input type="submit" value="Save Employee"/>
-    </s:form>
+    <div class="container">
+        <h1>Employee details</h1>
+        <hr/>
+        <s:form modelAttribute="employee" action="saveProcess">
+            <s:hidden path="id" />
+            <div class="form-group">
+                <s:input path="nik" class="form-control" placeholder="Enter your NIK"/>
+            </div>
+            <div class="form-group">
+                <s:input path="name" placeholder="Enter email" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <s:input path="phoneNumber" placeholder="phone number"  class="form-control"/>
+            </div>
+            <div>
+                <s:textarea path="address" placeholder="address"  class="form-control"/>
+            </div>
+            <div>
+                <s:input path="position" placeholder="position" class="form-control"/>
+            </div>
+            <div>
+                <s:input path="salary" placeholder="salary" class="form-control"/>
+            </div>
+            <input type="submit" value="Save" class="btn btn-info" />&nbsp;
+        </s:form>
+        <hr/>
+    </div>
 </body>
 </html>
