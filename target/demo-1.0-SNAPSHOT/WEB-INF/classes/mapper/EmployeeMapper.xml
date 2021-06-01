@@ -5,7 +5,7 @@
 
 <mapper namespace="com.example.demo.mapper.EmployeeMapper">
 
-    <select id="getAllEmployees" resultType="com.example.demo.entity.Employee" resultMap="com.example.demo.mapper.EmployeeResultMap.resultEmployee">
+    <select id="getAllEmployees" resultType="com.example.demo.entity.Employee" resultMap="/mapper/EmployeeResultMap.resultEmployee">
         SELECT * FROM EMP_HR
     </select>
 
@@ -18,7 +18,7 @@
         DELETE FROM EMP_HR WHERE ID=#{employeeId}
     </delete>
 
-    <select id="findById" parameterType="int" resultType="com.example.demo.entity.Employee" resultMap="com.example.demo.mapper.EmployeeResultMap.resultEmployee">
+    <select id="findById" parameterType="int" resultType="com.example.demo.entity.Employee" resultMap="/mapper/EmployeeResultMap.resultEmployee">
         SELECT * FROM EMP_HR WHERE ID=#{employeeId}
     </select>
 
